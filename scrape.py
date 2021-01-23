@@ -1,9 +1,11 @@
-from bs4 import BeautifulSoup
+import shutil
+import sys
+import time
+
 from pathlib import Path
+from bs4 import BeautifulSoup
 from requests import Session
 from tqdm.contrib.concurrent import thread_map
-import shutil
-import time
 
 
 class Scrape(object):
@@ -67,8 +69,11 @@ class Scrape(object):
                 with open(f"{self.file_path}\\{self.page_title}_{pos}.jpg", 'wb+') as f:
                     shutil.copyfileobj(r.raw, f)
                 time.sleep(1.5)
-            except Exception as e:
-                print(e)
+            except Exception as ex:
+                print(ex)
 
 
-Scrape()
+try:
+    Scrape()
+except KeyboardInterrupt as e:
+    sys.exit(1)
