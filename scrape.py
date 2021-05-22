@@ -36,6 +36,9 @@ class Scrape(object):
 
             print(f"Found {len(self.image_urls)} Images")
 
+            if not Path.exists(self.file_path):
+                Path.mkdir(self.file_path)
+            
             thread_map(self._download_images, range(0, len(self.image_urls)), max_workers=2)
 
     def get_image_urls(self, s, url, page_count=False, page_title=False):
@@ -57,8 +60,6 @@ class Scrape(object):
                 self.image_urls.append(f"https://www.hqdiesel.net/gallery/{a['href']}&fullsize=1")
 
     def _download_images(self, pos):
-        if not Path.exists(self.file_path):
-            Path.mkdir(self.file_path)
         with self.session as s:
             try:
                 r = s.get(self.image_urls[pos])
